@@ -70,6 +70,11 @@ namespace SuperUltrawideFix
 
     public class SupportedResolutionTypesPatch
     {
+        private static bool printed3440 = false;
+        private static bool printed3840 = false;
+        private static bool printed5120 = false;
+        private static bool printed7680 = false;
+
         public static void GetAttrPostfix(
             SupportedResolutionType fromType,
             ref SupportedResolutionTypeAttr __result
@@ -85,7 +90,11 @@ namespace SuperUltrawideFix
                         1440,
                         __result.SaveID
                     );
-                    Melon<SuperUltrawideFixMod>.Logger.Msg("Overriding 3440x1440 → 5120x1440");
+                    if (!printed3440)
+                    {
+                        Melon<SuperUltrawideFixMod>.Logger.Msg("Overriding 3440x1440 → 5120x1440");
+                        printed3440 = true;
+                    }
                     break;
 
                 case SupportedResolutionType.RES_3840_X_2160:
@@ -96,7 +105,11 @@ namespace SuperUltrawideFix
                         2160,
                         __result.SaveID
                     );
-                    Melon<SuperUltrawideFixMod>.Logger.Msg("Overriding 3840x2160 → 7680x2160");
+                    if (!printed3840)
+                    {
+                        Melon<SuperUltrawideFixMod>.Logger.Msg("Overriding 3840x2160 → 7680x2160");
+                        printed3840 = true;
+                    }
                     break;
             }
         }
@@ -110,12 +123,20 @@ namespace SuperUltrawideFix
             if (width == 5120 && height == 1440)
             {
                 __result = SupportedResolutionType.RES_3440_X_1440; // Will be overridden to 5120x1440
-                Melon<SuperUltrawideFixMod>.Logger.Msg("Mapped 5120x1440 → RES_3440_X_1440");
+                if (!printed5120)
+                {
+                    Melon<SuperUltrawideFixMod>.Logger.Msg("Mapped 5120x1440 → RES_3440_X_1440");
+                    printed5120 = true;
+                }
             }
             else if (width == 7680 && height == 2160)
             {
                 __result = SupportedResolutionType.RES_3840_X_2160; // Will be overridden to 7680x2160
-                Melon<SuperUltrawideFixMod>.Logger.Msg("Mapped 7680x2160 → RES_3840_X_2160");
+                if (!printed7680)
+                {
+                    Melon<SuperUltrawideFixMod>.Logger.Msg("Mapped 7680x2160 → RES_3840_X_2160");
+                    printed7680 = true;
+                }
             }
         }
 
