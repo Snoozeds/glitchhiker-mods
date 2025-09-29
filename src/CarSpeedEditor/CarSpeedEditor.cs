@@ -109,6 +109,7 @@ namespace CarSpeedEditor
                     currentMinSpeed = originalMinSpeed;
                     currentMaxSpeed = originalMaxSpeed;
                     speedChanged = true;
+                    displayTimer = displayDuration;
                     Melon<CarSpeedEditorMod>.Logger.Msg($"Reset to original values - Min: {currentMinSpeed}, Max: {currentMaxSpeed}");
                 }
             }
