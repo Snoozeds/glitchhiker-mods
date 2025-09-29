@@ -160,7 +160,7 @@ namespace CarSpeedEditor
                     GUI.color = Color.white;
                     GUI.Label(new Rect(panelX + 5, panelY + 25, 270, 20), $"Min Speed: {currentMinSpeed:F1} | Max Speed: {currentMaxSpeed:F1}");
                     GUI.color = Color.yellow;
-                    GUI.Label(new Rect(panelX + 5, panelY + 45, 270, 20), "Arrows: ↑↓=MaxSpd, ←→=MinSpd, Ctrl+R=Reset");
+                    GUI.Label(new Rect(panelX + 5, panelY + 45, 270, 20), "Arrows: ↑↓=MaxSpd, ←→=MinSpd, Ctrl+R=Reset, Ctrl+1=Step");
                 }
 
                 GUI.color = Color.white;
