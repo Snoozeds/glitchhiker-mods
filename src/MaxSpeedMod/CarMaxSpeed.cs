@@ -1,6 +1,6 @@
-﻿using MelonLoader;
+﻿using System.Reflection;
 using HarmonyLib;
-using System.Reflection;
+using MelonLoader;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -12,7 +12,7 @@ namespace MaxSpeedMod
     public class CarMaxSpeedMod : MelonMod
     {
         public static bool isEnabled = true;
-        private float displayTimer = 0f;          // HUD display timer
+        private float displayTimer = 0f; // HUD display timer
         private const float displayDuration = 2f; // Show HUD text for 2s
 
         public override void OnApplicationStart()
@@ -25,11 +25,17 @@ namespace MaxSpeedMod
         public override void OnUpdate()
         {
             // F5 to toggle mod
-            if (Keyboard.current != null && Keyboard.current.f5Key.wasPressedThisFrame && Application.isFocused)
+            if (
+                Keyboard.current != null
+                && Keyboard.current.f5Key.wasPressedThisFrame
+                && Application.isFocused
+            )
             {
                 isEnabled = !isEnabled; // toggle mod
                 displayTimer = displayDuration; // reset HUD timer
-                Melon<CarMaxSpeedMod>.Logger.Msg($"MaxSpeedMod {(isEnabled ? "Enabled" : "Disabled")}");
+                Melon<CarMaxSpeedMod>.Logger.Msg(
+                    $"MaxSpeedMod {(isEnabled ? "Enabled" : "Disabled")}"
+                );
             }
 
             // Count down HUD timer
@@ -50,7 +56,7 @@ namespace MaxSpeedMod
                 // Calculate bottom-right position
                 float textWidth = 200f;
                 float textHeight = 20f;
-                float xPos = Screen.width - textWidth - 10f;  // 10px from right edge
+                float xPos = Screen.width - textWidth - 10f; // 10px from right edge
                 float yPos = Screen.height - textHeight - 10f; // 10px from bottom edge
 
                 GUI.Label(new Rect(xPos, yPos, textWidth, textHeight), $"MaxSpeedMod: {status}");
@@ -69,9 +75,18 @@ namespace MaxSpeedMod
             if (__instance == null || !CarMaxSpeedMod.isEnabled)
                 return;
 
-            var targetSpeedField = typeof(CarController).GetField("targetSpeed", BindingFlags.NonPublic | BindingFlags.Instance);
-            var speedValueField = typeof(CarController).GetField("speedValue", BindingFlags.NonPublic | BindingFlags.Instance);
-            var maxSpeedField = typeof(CarController).GetField("maxSpeed", BindingFlags.NonPublic | BindingFlags.Instance);
+            var targetSpeedField = typeof(CarController).GetField(
+                "targetSpeed",
+                BindingFlags.NonPublic | BindingFlags.Instance
+            );
+            var speedValueField = typeof(CarController).GetField(
+                "speedValue",
+                BindingFlags.NonPublic | BindingFlags.Instance
+            );
+            var maxSpeedField = typeof(CarController).GetField(
+                "maxSpeed",
+                BindingFlags.NonPublic | BindingFlags.Instance
+            );
 
             if (targetSpeedField == null || speedValueField == null || maxSpeedField == null)
                 return;

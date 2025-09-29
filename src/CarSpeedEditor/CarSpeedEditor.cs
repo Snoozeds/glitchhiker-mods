@@ -1,10 +1,15 @@
-﻿using MelonLoader;
+﻿using System.Reflection;
 using HarmonyLib;
-using System.Reflection;
+using MelonLoader;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[assembly: MelonInfo(typeof(CarSpeedEditor.CarSpeedEditorMod), "Car Speed Editor", "1.0.0", "snoozeds")]
+[assembly: MelonInfo(
+    typeof(CarSpeedEditor.CarSpeedEditorMod),
+    "Car Speed Editor",
+    "1.0.0",
+    "snoozeds"
+)]
 [assembly: MelonGame("Silverstring Media", "Glitchhikers The Spaces Between")]
 
 namespace CarSpeedEditor
@@ -39,7 +44,11 @@ namespace CarSpeedEditor
             configCategory = MelonPreferences.CreateCategory("CarSpeedEditor");
             minSpeedEntry = configCategory.CreateEntry<float>("MinSpeed", 32f, "Minimum Speed");
             maxSpeedEntry = configCategory.CreateEntry<float>("MaxSpeed", 48, "Maximum Speed");
-            speedAdjustmentStep = configCategory.CreateEntry<float>("AdjustmentStep", 2f, "Speed Adjustment Step");
+            speedAdjustmentStep = configCategory.CreateEntry<float>(
+                "AdjustmentStep",
+                2f,
+                "Speed Adjustment Step"
+            );
 
             // Load saved values
             currentMinSpeed = minSpeedEntry.Value;
@@ -61,7 +70,9 @@ namespace CarSpeedEditor
             {
                 isEnabled = !isEnabled;
                 displayTimer = displayDuration;
-                Melon<CarSpeedEditorMod>.Logger.Msg($"CarSpeedEditor {(isEnabled ? "Enabled" : "Disabled")}");
+                Melon<CarSpeedEditorMod>.Logger.Msg(
+                    $"CarSpeedEditor {(isEnabled ? "Enabled" : "Disabled")}"
+                );
             }
 
             // Only process speed adjustments if mod is enabled
@@ -74,8 +85,10 @@ namespace CarSpeedEditor
             }
 
             bool speedChanged = false;
-            bool ctrlHeld = Keyboard.current.leftCtrlKey.isPressed || Keyboard.current.rightCtrlKey.isPressed;
-            bool shiftHeld = Keyboard.current.leftShiftKey.isPressed || Keyboard.current.rightShiftKey.isPressed;
+            bool ctrlHeld =
+                Keyboard.current.leftCtrlKey.isPressed || Keyboard.current.rightCtrlKey.isPressed;
+            bool shiftHeld =
+                Keyboard.current.leftShiftKey.isPressed || Keyboard.current.rightShiftKey.isPressed;
 
             // Arrow key controls for speed adjustment
             if (Keyboard.current.upArrowKey.wasPressedThisFrame) // Increase max speed
@@ -110,7 +123,9 @@ namespace CarSpeedEditor
                     currentMaxSpeed = originalMaxSpeed;
                     speedChanged = true;
                     displayTimer = displayDuration;
-                    Melon<CarSpeedEditorMod>.Logger.Msg($"Reset to original values - Min: {currentMinSpeed}, Max: {currentMaxSpeed}");
+                    Melon<CarSpeedEditorMod>.Logger.Msg(
+                        $"Reset to original values - Min: {currentMinSpeed}, Max: {currentMaxSpeed}"
+                    );
                 }
             }
             else if (Keyboard.current.digit1Key.wasPressedThisFrame && ctrlHeld) // Ctrl+1 to change adjustment step
@@ -119,7 +134,9 @@ namespace CarSpeedEditor
                 speedAdjustmentStep.Value = adjustmentStep;
                 configCategory.SaveToFile();
                 displayTimer = displayDuration;
-                Melon<CarSpeedEditorMod>.Logger.Msg($"Adjustment step changed to: {adjustmentStep}");
+                Melon<CarSpeedEditorMod>.Logger.Msg(
+                    $"Adjustment step changed to: {adjustmentStep}"
+                );
             }
 
             // Save to preferences if speed changed
@@ -145,7 +162,7 @@ namespace CarSpeedEditor
                 // Calculate bottom-right position
                 float panelWidth = 280f;
                 float panelHeight = 80f;
-                float panelX = Screen.width - panelWidth - 10f;  // 10px from right edge
+                float panelX = Screen.width - panelWidth - 10f; // 10px from right edge
                 float panelY = Screen.height - panelHeight - 10f; // 10px from bottom edge
 
                 // Background box
@@ -159,9 +176,15 @@ namespace CarSpeedEditor
                 if (isEnabled)
                 {
                     GUI.color = Color.white;
-                    GUI.Label(new Rect(panelX + 5, panelY + 25, 270, 20), $"Min Speed: {currentMinSpeed:F1} | Max Speed: {currentMaxSpeed:F1}");
+                    GUI.Label(
+                        new Rect(panelX + 5, panelY + 25, 270, 20),
+                        $"Min Speed: {currentMinSpeed:F1} | Max Speed: {currentMaxSpeed:F1}"
+                    );
                     GUI.color = Color.yellow;
-                    GUI.Label(new Rect(panelX + 5, panelY + 45, 270, 20), "Arrows: ↑↓=MaxSpd, ←→=MinSpd, Ctrl+R=Reset, Ctrl+1=Step");
+                    GUI.Label(
+                        new Rect(panelX + 5, panelY + 45, 270, 20),
+                        "Arrows: ↑↓=MaxSpd, ←→=MinSpd, Ctrl+R=Reset, Ctrl+1=Step"
+                    );
                 }
 
                 GUI.color = Color.white;
@@ -177,8 +200,14 @@ namespace CarSpeedEditor
             if (__instance == null || !CarSpeedEditorMod.isEnabled)
                 return;
 
-            var minSpeedField = typeof(CarController).GetField("minSpeed", BindingFlags.NonPublic | BindingFlags.Instance);
-            var maxSpeedField = typeof(CarController).GetField("maxSpeed", BindingFlags.NonPublic | BindingFlags.Instance);
+            var minSpeedField = typeof(CarController).GetField(
+                "minSpeed",
+                BindingFlags.NonPublic | BindingFlags.Instance
+            );
+            var maxSpeedField = typeof(CarController).GetField(
+                "maxSpeed",
+                BindingFlags.NonPublic | BindingFlags.Instance
+            );
 
             if (minSpeedField == null || maxSpeedField == null)
                 return;
@@ -191,7 +220,10 @@ namespace CarSpeedEditor
                 CarSpeedEditorMod.originalValuesSaved = true;
 
                 // If this is the first time and preferences are still at defaults, use original values
-                if (CarSpeedEditorMod.currentMinSpeed == 32f && CarSpeedEditorMod.currentMaxSpeed == 48f)
+                if (
+                    CarSpeedEditorMod.currentMinSpeed == 32f
+                    && CarSpeedEditorMod.currentMaxSpeed == 48f
+                )
                 {
                     CarSpeedEditorMod.currentMinSpeed = CarSpeedEditorMod.originalMinSpeed;
                     CarSpeedEditorMod.currentMaxSpeed = CarSpeedEditorMod.originalMaxSpeed;
